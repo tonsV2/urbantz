@@ -4,7 +4,11 @@ const port = 3000
 app.use(express.json())
 
 app.get('/uptime', (req, res) => {
-    res.send('Hello World!')
+    const body = {
+        'timestamp': new Date().toISOString(),
+        'uptime': process.uptime()
+    }
+    res.send(body)
 })
 
 app.get('/server/uptime', (req, res) => {
