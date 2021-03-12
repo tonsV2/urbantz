@@ -22,7 +22,11 @@ app.get('/server/uptime', (req, res) => {
 })
 
 app.get('/health', (req, res) => {
-    res.send({'status': 'ok'})
+    const body = {
+        'timestamp': new Date().toISOString(),
+        'status': 'ok'
+    }
+    res.send(body)
 })
 
 app.listen(port, () => console.log(`Server accessible by http://localhost:${port}`))
