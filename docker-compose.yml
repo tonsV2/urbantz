@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  dev:
+    image: node:14.10.1-alpine3.11
+    volumes:
+      - .:/src
+    working_dir: /src
+    command: /bin/sh -c 'exec npm run dev'
+    ports:
+      - 3000:3000
+    tty: true
+
+  prod:
+    image: tons/urbantz-api
+    build: .
+    ports:
+      - 3000:3000
