@@ -3,4 +3,4 @@ WORKDIR /src
 COPY . .
 RUN npm install
 USER guest
-CMD ["node", "server.js"]
+CMD ["node", "app.js"]
