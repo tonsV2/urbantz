@@ -1,6 +1,6 @@
 FROM node:14.10.1-alpine3.11
 WORKDIR /src
 COPY . .
-RUN npm install
+RUN npm ls && npm ci
 USER guest
 CMD ["node", "app.js"]
