@@ -53,7 +53,7 @@ jobs:
         run: |
           docker-compose up -d production
           sleep 5
-          curl --fail localhost:8080/healthcheck
+          curl --fail localhost:8080/health
           docker-compose down
 
       - name: Log into registry
