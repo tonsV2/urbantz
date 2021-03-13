@@ -1,32 +1,5 @@
-const express = require('express')
-const os = require('os');
+const server = require('./src/server');
 
-const app = express()
-const port = 3000
-app.use(express.json())
+const port = process.env.PORT || 3000;
 
-app.get('/uptime', (req, res) => {
-    const body = {
-        'timestamp': new Date().toISOString(),
-        'uptime': process.uptime()
-    }
-    res.send(body)
-})
-
-app.get('/server/uptime', (req, res) => {
-    const body = {
-        'timestamp': new Date().toISOString(),
-        'uptime': os.uptime()
-    }
-    res.send(body)
-})
-
-app.get('/health', (req, res) => {
-    const body = {
-        'timestamp': new Date().toISOString(),
-        'status': 'ok'
-    }
-    res.send(body)
-})
-
-app.listen(port, () => console.log(`Server accessible by http://localhost:${port}`))
+server.listen(port, () => console.log(`Server accessible by http://localhost:${port}`));
