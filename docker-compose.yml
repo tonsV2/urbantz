@@ -19,7 +19,7 @@ services:
     command: /bin/sh -c 'npm install && exec npm test'
     tty: true
 
-  prod:
+  production:
     image: tons/urbantz-api
     build: .
     ports:
