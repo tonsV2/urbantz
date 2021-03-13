@@ -1,0 +1,72 @@
+name: Docker image creation
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - master
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  # This should match what's in the docker-compose production service
+  IMAGE_NAME: tons/urbantz-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          touch .env
+          docker-compose build test
+          docker-compose run test
+
+      - name: Find version
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          # Export
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build image
+        run: |
+          docker-compose build production
+
+      - name: Smoke test Docker image
+        run: |
+          docker-compose up -d production
+          sleep 5
+          curl --fail localhost:8080/healthcheck
+          docker-compose down
+
+      - name: Log into registry
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push image
+        run: |
+          VERSION="${{ env.VERSION }}"
+          IV=$IMAGE_NAME:$VERSION
+          echo IMAGE=$IV
+
+          docker tag $IMAGE_NAME $IV
+          docker push $IV
