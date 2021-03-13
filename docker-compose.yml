@@ -11,6 +11,14 @@ services:
       - 3000:3000
     tty: true
 
+  test:
+    image: node:14.10.1-alpine3.11
+    volumes:
+      - .:/src
+    working_dir: /src
+    command: /bin/sh -c 'npm install && exec npm test'
+    tty: true
+
   prod:
     image: tons/urbantz-api
     build: .
