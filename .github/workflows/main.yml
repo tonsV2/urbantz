@@ -70,3 +70,33 @@ jobs:
 
           docker tag $IMAGE_NAME $IV
           docker push $IV
+
+      - name: Lint Helm
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm lint helm/
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+
+      - name: Test chart
+        run: |
+          echo "TODO"
+
+      - name: Push chart
+        run: |
+          echo "TODO"
+
+      - name: Setup helmfile
+        uses: mamezou-tech/setup-helmfile@v0.7.0
+
+      - name: Configure kubectl
+        run: |
+          mkdir /home/runner/.kube
+          echo "${{ secrets.KUBECONFIG }}" > /home/runner/.kube/config
+
+      - name: Deploy
+        run: |
+          export IMAGE_TAG="${{ env.VERSION }}"
+          [ "$IMAGE_TAG" == "latest" ] && helmfile -e dev sync
+          [ "$IMAGE_TAG" != "latest" ] && helmfile -e prod sync
+          ls # HACK: Unless this line is present the pipeline fails with exitcode 1

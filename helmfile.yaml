@@ -1,0 +1,25 @@
+environments:
+  dev:
+    values:
+      - kubeContext: nuc
+      - host: urbantz-api.dev.fitfit.dk
+  prod:
+    values:
+      - kubeContext: nuc
+      - host: urbantz-api.fitfit.dk
+
+releases:
+  - name: urbantz-api
+    namespace: urbantz-api-{{ .Environment.Name }}
+    chart: helm/
+    kubeContext: "{{ .Values.kubeContext }}"
+#    verify: true
+    values:
+      - image:
+          tag: '{{ requiredEnv "IMAGE_TAG" }}'
+      - ingress:
+          enabled: true
+          hosts:
+            - host: {{ .Values.host }}
+              paths:
+                - path: /
