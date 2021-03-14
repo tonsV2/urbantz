@@ -7,9 +7,9 @@ Simple Node.js API
 
 - [Endpoints](#endpoints)
 - [Request examples](#request-examples)
-  - [Post a new name](#post-a-new-name)
-  - [Get the stored name](#get-the-stored-name)
-  - [Get the application status](#get-the-application-status)
+  - [Get application uptime](#get-application-uptime)
+  - [Get server uptime](#get-server-uptime)
+  - [Get application health status](#get-application-health-status)
 - [Development](#development)
 - [Tests](#tests)
 - [Configuration](#configuration)
@@ -44,19 +44,19 @@ The application provides a small API consisting of the following endpoints.
 | GET    | /health        | Show health status of the application |
 
 # Request examples
-The following examples uses HTTPie and assumes the application is running on `localhost` at port `8080`
+The following examples uses HTTPie and assumes the application is running on `localhost` at port `3000`
 
-## Post a new name
+## Get application uptime
 ```bash
 http :3000/uptime
 ```
 
-## Get the stored name
+## Get server uptime
 ```bash
 http :3000/server/uptime
 ```
 
-## Get the application status
+## Get application health status
 ```bash
 http :3000/health
 ```
@@ -64,11 +64,11 @@ http :3000/health
 # Development
 Run the below command and point your browser to [http://localhost:3000](http://localhost:3000).
 
-Any changes to the source code should be automatically reflected.
-
 ```bash
 docker-compose up dev
 ```
+
+Any changes to the source code should be automatically reflected.
 
 # Tests
 The limited amount of tests can be found in the [src/tests](src/tests) folder.
@@ -101,7 +101,7 @@ A GitHub Action secret of the name `KUBECONFIG` containing your raw `kubectl` co
 In the following I'll try to give some insights into the toughts I had during development
 
 ## Docker
-Docker is tool which offers great power but can also easily be configured to cause a security breach.
+Docker is a tool which offers great power but can also easily be configured to cause a security breach.
 
 ### Configuration
 Only configurable aspect of this application is the server port which can be configured externally via an environment variable.
@@ -133,7 +133,7 @@ The important thing to note is that it's a normal user with a limited set of cap
 This should be enforced in the CI/CD pipeline.
 
 ## Docker compose
-I want to make it as easy as possible for the developers working on this app. Therefore I've implemented a Docker Compose service called dev. The idea is that the developer can be up and running with having to worry about installing any dependencies beside Docker and Docker Compose.
+I want to make it as easy as possible for the developers working on this app. Therefore I've implemented a Docker Compose service called `dev`. The idea is that the developer can be up and running with having to worry about installing any dependencies beside Docker and Docker Compose.
 
 ## Helmfile
 I don't release a Helm package, and I've ignored versioning for the initial release of this app. It would be fairly easy to support different versions running (or being disabled) in different environments.
