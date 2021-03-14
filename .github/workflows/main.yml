@@ -65,11 +65,8 @@ jobs:
       - name: Push image
         run: |
           VERSION="${{ env.VERSION }}"
-          IV=$IMAGE_NAME:$VERSION
-          echo IMAGE=$IV
-
-          docker tag $IMAGE_NAME $IV
-          docker push $IV
+          docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
+          docker push $IMAGE_NAME:$VERSION
 
       - name: Lint Helm
         uses: WyriHaximus/github-action-helm3@v2
