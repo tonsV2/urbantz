@@ -47,11 +47,11 @@ jobs:
 
       - name: Build image
         run: |
-          docker-compose build production
+          docker-compose build prod
 
       - name: Smoke test Docker image
         run: |
-          docker-compose up -d production
+          docker-compose up -d prod
           sleep 5
           curl --fail localhost:8080/health
           docker-compose down
