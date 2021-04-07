@@ -1,4 +1,4 @@
-const os = require('os');
+const os = require('os')
 
 const uptime = async (req, res) => {
     const body = {
@@ -6,7 +6,7 @@ const uptime = async (req, res) => {
         'uptime': process.uptime()
     }
     res.send(body)
-};
+}
 
 const serverUptime = async (req, res) => {
     const body = {
@@ -14,9 +14,9 @@ const serverUptime = async (req, res) => {
         'uptime': os.uptime()
     }
     res.send(body)
-};
+}
 
 module.exports = {
     uptime,
     serverUptime
-};
+}

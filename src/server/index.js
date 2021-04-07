@@ -1,9 +1,9 @@
-const express = require('express');
-const routes = require('../routes');
+const express = require('express')
+const routes = require('../routes')
 
-const server = express();
-server.use(express.json());
+const server = express()
+server.use(express.json())
 
-server.use('/', routes);
+server.use('/', routes)
 
-module.exports = server;
+module.exports = server

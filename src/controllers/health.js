@@ -4,8 +4,8 @@ const health = async (req, res) => {
         'status': 'ok'
     }
     res.send(body)
-};
+}
 
 module.exports = {
     health
-};
+}
